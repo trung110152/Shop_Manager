@@ -11,7 +11,7 @@ export class Product {
     @Column()
     description: string
     @Column()
-    stockQuantity: number // so luong con lai trong kho
+    inventory: number // so luong con lai trong kho
     @Column()
     categoryId: number
     @Column()
