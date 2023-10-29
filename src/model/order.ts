@@ -3,9 +3,9 @@ import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 @Entity()
 export class Order {
     @PrimaryGeneratedColumn()
-    id: number;
+    orderId: number
     @Column()
-    idUser: number
+    userId: number
     @Column()
     receiver: string
     @Column()
@@ -13,9 +13,9 @@ export class Order {
     @Column()
     phone: number
     @Column({type: "timestamp"})
-    time: string
+    orderDate: string
     @Column()
-    totalPoint: number
+    totalAmount: number // tong so tin don hang
     @Column()
     status: string
 }

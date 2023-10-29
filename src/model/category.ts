@@ -3,7 +3,7 @@ import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 @Entity()
 export class Category {
     @PrimaryGeneratedColumn()
-    id: number;
+    categoryId: number
     @Column()
-    name: string
+    categoryName: string
 }

@@ -3,15 +3,17 @@ import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 @Entity()
 export class Product {
     @PrimaryGeneratedColumn()
-    id: number;
+    productId: number
     @Column()
-    name: string
+    productName: string
     @Column()
     price: number
     @Column()
     description: string
     @Column()
-    totalQuantity: number
+    stockQuantity: number // so luong con lai trong kho
+    @Column()
+    categoryId: number
     @Column()
     image: string
 }
