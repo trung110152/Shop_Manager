@@ -3,7 +3,7 @@ export declare class Product {
     productName: string;
     price: number;
     description: string;
-    stockQuantity: number;
+    inventory: number;
     categoryId: number;
     image: string;
 }

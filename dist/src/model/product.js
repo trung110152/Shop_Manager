@@ -32,7 +32,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Product.prototype, "stockQuantity", void 0);
+], Product.prototype, "inventory", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
