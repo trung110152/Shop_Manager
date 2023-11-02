@@ -26,7 +26,6 @@ class ProductService {
         this.editProduct = async (productId, productData) => {
             try {
                 const product = await this.productRepository.findOneBy({ productId });
-                console.log(product);
                 if (!product) {
                     throw new Error('Sản phẩm không tồn tại.');
                 }
@@ -47,6 +46,33 @@ class ProductService {
             }
             catch (error) {
                 throw new Error(error.message);
+            }
+        };
+        this.findOneByID = async (productId) => {
+            try {
+                let sql = `select p.productId, p.productName, p.price, p.description, p.inventory, p.image, c.categoryName from  product p join category c on p.categoryId = c.categoryId where p.productId = ${productId}`;
+                const products = await this.productRepository.query(sql);
+                if (!products.length) {
+                    throw new Error('Sản phẩm không tồn tại.');
+                }
+                return products[0];
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
+        };
+        this.findByConditions = async (productName, categoryId) => {
+            let category = '';
+            if (categoryId != 0) {
+                category = categoryId;
+            }
+            try {
+                let sql = `select p.productId, p.productName, p.price, p.description, p.inventory, p.image, c.categoryName from  shop_database.product p join shop_database.category c on p.categoryId = c.categoryId where p.productName like '%${productName}%' and p.categoryId${category}`;
+                const productList = await this.productRepository.query(sql);
+                return productList;
+            }
+            catch (error) {
+                throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm.');
             }
         };
         this.productRepository = data_source_1.AppDataSource.getRepository(product_1.Product);

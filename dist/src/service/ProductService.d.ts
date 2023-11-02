@@ -5,6 +5,8 @@ declare class ProductService {
     createProduct: (productData: Object) => Promise<any>;
     editProduct: (productId: any, productData: any) => Promise<string>;
     deleteProduct: (productId: any) => Promise<string>;
+    findOneByID: (productId: any) => Promise<any>;
+    findByConditions: (productName: any, categoryId: any) => Promise<any>;
 }
 declare const _default: ProductService;
 export default _default;

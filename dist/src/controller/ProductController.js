@@ -19,6 +19,7 @@ class ProductController {
             const productData = req.body;
             try {
                 const product = await ProductService_1.default.createProduct(productData);
+                console.log(product);
                 return res.status(200).json({ product });
             }
             catch (error) {
@@ -33,7 +34,6 @@ class ProductController {
                 return res.status(200).json(updatedProduct);
             }
             catch (error) {
-                console.log(error);
                 return res.status(500).json({ message: error.message });
             }
         };
@@ -42,6 +42,27 @@ class ProductController {
             try {
                 const message = await ProductService_1.default.deleteProduct(productId);
                 return res.status(200).json({ message });
+            }
+            catch (error) {
+                return res.status(500).json({ message: error.message });
+            }
+        };
+        this.findOneByID = async (req, res) => {
+            const productId = req.params.id;
+            try {
+                const product = await ProductService_1.default.findOneByID(productId);
+                return res.status(200).json(product);
+            }
+            catch (error) {
+                return res.status(500).json({ message: error.message });
+            }
+        };
+        this.findByConditions = async (req, res) => {
+            const productName = req.query.productName;
+            const categoryId = req.query.categoryId;
+            try {
+                const product = await ProductService_1.default.findByConditions(productName, categoryId);
+                return res.status(200).json(product);
             }
             catch (error) {
                 return res.status(500).json({ message: error.message });

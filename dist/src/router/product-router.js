@@ -11,4 +11,6 @@ exports.productRouter.get('/', ProductController_1.default.getProducts);
 exports.productRouter.post('/', ProductController_1.default.createProduct);
 exports.productRouter.put('/:id', ProductController_1.default.updateProduct);
 exports.productRouter.delete('/:id', ProductController_1.default.deleteProduct);
+exports.productRouter.get('/:id', ProductController_1.default.findOneByID);
+exports.productRouter.get('/findByConditions/search', ProductController_1.default.findByConditions);
 //# sourceMappingURL=product-router.js.map
