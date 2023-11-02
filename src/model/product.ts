@@ -12,7 +12,7 @@ export class Product {
     description: string
     @Column()
     inventory: number // so luong con lai trong kho
-    @Column()
+    @Column({default: 1})
     categoryId: number
     @Column()
     image: string

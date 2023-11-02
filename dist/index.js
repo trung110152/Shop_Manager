@@ -28,7 +28,9 @@ app.use((0, express_session_1.default)({
     cookie: { maxAge: 60000 }
 }));
 app.use('', router_1.router);
-app.listen(3001, () => {
-    console.log('Server is running');
+const PORT = 3001;
+app.listen(PORT, () => {
+    const serverURL = `http://localhost:3001`;
+    console.log(`Server is running at ${serverURL}`);
 });
 //# sourceMappingURL=index.js.map

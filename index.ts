@@ -24,7 +24,8 @@ app.use(session({
     secret: 'somesecret',
     cookie: { maxAge: 60000 }}));
 app.use('', router);
-
-app.listen(3001, () => {
-    console.log('Server is running')
+const PORT = 3001
+app.listen(PORT, () => {
+    const serverURL= `http://localhost:3001`;
+    console.log(`Server is running at ${serverURL}`);
 })

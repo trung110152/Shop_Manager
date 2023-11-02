@@ -34,7 +34,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Product.prototype, "inventory", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: 1 }),
     __metadata("design:type", Number)
 ], Product.prototype, "categoryId", void 0);
 __decorate([
