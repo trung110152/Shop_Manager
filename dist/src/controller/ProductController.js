@@ -19,7 +19,6 @@ class ProductController {
             const productData = req.body;
             try {
                 const product = await ProductService_1.default.createProduct(productData);
-                console.log(product);
                 return res.status(200).json(product);
             }
             catch (error) {

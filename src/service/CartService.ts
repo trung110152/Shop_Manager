@@ -10,7 +10,8 @@ class CartService {
 
     getCart = async (userId) => {
         try {
-            const cart = await this.cartRepository.query(`select * from cart where userId = ${userId}`);
+            const sql = `select c.cartId, c.userId, c.productId, c.quantity, p.productName, p.price, p.description, p.inventory, p.categoryId, p.image from cart c join product p on c.productId = p.productId where c.userId = ${userId}`;
+            const cart = await this.cartRepository.query(sql);
             return cart;
         } catch (error) {
             throw new Error('Lỗi trong quá trình lấy giỏ hàng.'+ error.message);
@@ -20,21 +21,36 @@ class CartService {
 
     createCart = async (cartData) => {
         try {
-            const cart = await this.cartRepository.save(cartData);
-          return cart;
+            await this.cartRepository.save(cartData);
+            const carts = await this.getCart(cartData.userId);
+            return carts;
         } catch (error) {
-          throw new Error('Lỗi trong quá trình tạo giỏ hàng.');
+           throw new Error('Lỗi trong quá trình tạo giỏ hàng.');
         }
     }
 
     updateCart = async (cartId, cartData) => {
         try {
-           let update = await this.cartRepository.update(cartId,cartData)
-           return 'Số lượng sản phẩm đã được sửa thành công.' 
+            await this.cartRepository.update(cartId,cartData);
+            const carts = await this.getCart(cartData.userId);
+            return carts; 
          } catch (error) {
-           throw new Error(error.message);
+            throw new Error(error.message);
          }
        };
+
+       deleteCart = async (cartId)=> {
+        try {
+          const result = await this.cartRepository.delete(cartId);
+          if (result.affected === 1) {
+            return 'Sản phẩm đã được xóa thành công.'
+          }
+            throw new Error('Sản phẩm không tồn tại.');
+          
+        } catch (error) {
+          throw new Error(error.message);
+        }
+    } 
 }
 
 export default new CartService();

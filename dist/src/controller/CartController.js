@@ -19,24 +19,33 @@ class CartController {
         };
         this.productAddToCart = async (req, res) => {
             const cartData = req.body;
-            const newProduct = { productId: cartData.productId, quantity: +cartData.quantity, userId: cartData.userId };
+            let newProduct = { productId: cartData.productId, quantity: +cartData.quantity, userId: cartData.userId };
             try {
                 let carts = await CartService_1.default.getCart(cartData.userId);
                 if (!carts.length) {
-                    let newCart = await CartService_1.default.createCart(newProduct);
-                    carts.push(newCart);
+                    carts = await CartService_1.default.createCart(newProduct);
                     return res.status(200).json(carts);
                 }
                 const existingProductIndex = carts.findIndex((product) => product.productId == newProduct.productId);
                 if (existingProductIndex !== -1) {
-                    carts[existingProductIndex].quantity += newProduct.quantity;
-                    await CartService_1.default.updateCart({ cartId: carts[existingProductIndex].cartId }, carts[existingProductIndex]);
+                    newProduct.quantity += carts[existingProductIndex].quantity;
+                    carts = await CartService_1.default.updateCart({ cartId: carts[existingProductIndex].cartId }, newProduct);
+                    console.log(carts);
                 }
                 else {
-                    let newCart = await CartService_1.default.createCart(newProduct);
-                    carts.push(newCart);
+                    carts = await CartService_1.default.createCart(newProduct);
                 }
                 return res.status(200).json(carts);
+            }
+            catch (error) {
+                return res.status(500).json({ message: error.message });
+            }
+        };
+        this.deleteCart = async (req, res) => {
+            const cartId = req.params.id;
+            try {
+                const message = await CartService_1.default.deleteCart(cartId);
+                return res.status(200).json(message);
             }
             catch (error) {
                 return res.status(500).json({ message: error.message });

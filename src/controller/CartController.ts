@@ -20,13 +20,12 @@ class CartController {
 
     productAddToCart = async (req:Request, res: Response) => {
       const cartData = req.body;
-      const newProduct = { productId: cartData.productId, quantity: +cartData.quantity ,userId: cartData.userId };
+      let newProduct = { productId: cartData.productId, quantity: +cartData.quantity ,userId: cartData.userId };
       try {
         let carts = await cartService.getCart(cartData.userId);
           
         if(!carts.length){
-          let newCart = await cartService.createCart(newProduct);
-          carts.push(newCart);
+          carts = await cartService.createCart(newProduct);
           return res.status(200).json(carts)
         }
         const existingProductIndex = carts.findIndex(
@@ -35,17 +34,28 @@ class CartController {
         
           
         if (existingProductIndex !== -1) {
-          carts[existingProductIndex].quantity += newProduct.quantity;
-          await cartService.updateCart({cartId:carts[existingProductIndex].cartId},carts[existingProductIndex])
+          newProduct.quantity += carts[existingProductIndex].quantity  ;
+          carts = await cartService.updateCart({cartId:carts[existingProductIndex].cartId},newProduct)
+          console.log(carts);
+          
         } else {
-          let newCart = await cartService.createCart(newProduct);
-          carts.push(newCart)
+          carts = await cartService.createCart(newProduct);
         }
         return res.status(200).json(carts)
       } catch (error) {
         return res.status(500).json({message: error.message})
       }
     }
+
+    deleteCart = async (req: Request, res: Response) => {
+      const cartId = req.params.id;
+      try {
+        const message = await cartService.deleteCart(cartId);
+        return res.status(200).json(message);
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
+      }
+    };
 }
 
 export default new CartController();

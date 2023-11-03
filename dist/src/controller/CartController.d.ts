@@ -4,6 +4,7 @@ declare class CartController {
     constructor();
     getCart: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     productAddToCart: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    deleteCart: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
 }
 declare const _default: CartController;
 export default _default;

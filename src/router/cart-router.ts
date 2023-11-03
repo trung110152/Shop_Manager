@@ -3,5 +3,6 @@ import cartController from "../controller/CartController";
 
 export const cartRouter = Router();
 
-cartRouter.get('/:id', cartController.getCart);
-cartRouter.post('/', cartController.productAddToCart);
+cartRouter.get('/:id', cartController.getCart); // useId
+cartRouter.post('/', cartController.productAddToCart); // body: userId, productId, quantity
+cartRouter.delete('/:id', cartController.deleteCart); // cartId
