@@ -22,7 +22,7 @@ class ProductController {
           const product = await productService.createProduct(productData);
           console.log(product);
           
-          return res.status(200).json({ product });
+          return res.status(200).json(product);
         } catch (error) {
           return res.status(500).json({ message: error.message });
         }
@@ -44,7 +44,7 @@ class ProductController {
         const productId = req.params.id;
         try {
           const message = await productService.deleteProduct(productId);
-          return res.status(200).json({ message });
+          return res.status(200).json(message);
         } catch (error) {
           return res.status(500).json({ message: error.message });
         }

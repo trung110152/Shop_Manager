@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const CategoryService_1 = __importDefault(require("../service/CategoryService"));
-class ProductController {
+class CategoryController {
     constructor() {
         this.getCategories = async (req, res) => {
             try {
@@ -19,7 +19,7 @@ class ProductController {
             const categoryData = req.body;
             try {
                 const category = await CategoryService_1.default.createCategory(categoryData);
-                return res.status(200).json({ category });
+                return res.status(200).json(category);
             }
             catch (error) {
                 return res.status(500).json({ message: error.message });
@@ -28,5 +28,5 @@ class ProductController {
         this.categoryService = CategoryService_1.default;
     }
 }
-exports.default = new ProductController();
+exports.default = new CategoryController();
 //# sourceMappingURL=CategoryController.js.map

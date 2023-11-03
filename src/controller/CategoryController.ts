@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import categoryService from "../service/CategoryService";
-class ProductController {
+class CategoryController {
     private categoryService;
      constructor() {
         this.categoryService = categoryService;
@@ -20,11 +20,11 @@ class ProductController {
         const categoryData = req.body;
         try {
           const category = await categoryService.createCategory(categoryData);
-          return res.status(200).json({ category });
+          return res.status(200).json(category);
         } catch (error) {
           return res.status(500).json({ message: error.message });
         }
       };
 }
 
-export default new ProductController();
+export default new CategoryController();

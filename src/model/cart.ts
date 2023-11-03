@@ -10,4 +10,5 @@ export class Cart {
     productId: number
     @Column()
     quantity: number
+
 }
