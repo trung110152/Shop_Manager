@@ -42,7 +42,7 @@ class CartController {
             }
         };
         this.deleteCart = async (req, res) => {
-            const cartId = req.params.id;
+            const cartId = req.body.cartId;
             try {
                 const message = await CartService_1.default.deleteCart(cartId);
                 return res.status(200).json(message);

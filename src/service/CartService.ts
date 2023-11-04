@@ -41,8 +41,11 @@ class CartService {
 
        deleteCart = async (cartId)=> {
         try {
-          const result = await this.cartRepository.delete(cartId);
-          if (result.affected === 1) {
+            const sql = `delete from cart where cartId in (${cartId})`
+          const result = await this.cartRepository.query(sql);
+          console.log(result);
+          
+          if (result.affectedRows > 0) {
             return 'Sản phẩm đã được xóa thành công.'
           }
             throw new Error('Sản phẩm không tồn tại.');
