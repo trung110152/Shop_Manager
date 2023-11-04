@@ -10,16 +10,15 @@ class OrderService {
         this.orderDetailRepository = AppDataSource.getRepository(OrderDetail);
     }
 
-    // getCart = async (userId) => {
-    //     try {
-    //         const sql = `select c.cartId, c.userId, c.productId, c.quantity, p.productName, p.price, p.description, p.inventory, p.categoryId, p.image from cart c join product p on c.productId = p.productId where c.userId = ${userId}`;
-    //         const cart = await this.cartRepository.query(sql);
-    //         return cart;
-    //     } catch (error) {
-    //         throw new Error('Lỗi trong quá trình lấy giỏ hàng.'+ error.message);
-    //     }
+    getOrders = async (userId) => {
+        try {
+            const orderList = await this.orderRepository.find({userId: userId});
+            return orderList;
+        } catch (error) {
+            throw new Error('Lỗi trong quá trình lấy danh đơn.');
+        }
         
-    // }
+    }
 
     createOrder = async (orderData) => {
         try {
@@ -40,16 +39,16 @@ class OrderService {
            throw new Error(error.message);
         }
     }
-
-    // updateCart = async (cartId, cartData) => {
-    //     try {
-    //         await this.cartRepository.update(cartId,cartData);
-    //         const carts = await this.getCart(cartData.userId);
-    //         return carts; 
-    //      } catch (error) {
-    //         throw new Error(error.message);
-    //      }
-    // }
+    checkOrderDetailData = (arr) => {
+        return arr.every(item => 
+          item.hasOwnProperty('productId') && 
+          item.hasOwnProperty('quantity') &&
+          typeof item.productId === 'number' && 
+          typeof item.quantity === 'number' && 
+          item.productId > 0 && 
+          item.quantity > 0
+          )
+        }
 }
 
 export default new OrderService();
