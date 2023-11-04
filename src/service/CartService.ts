@@ -37,9 +37,9 @@ class CartService {
          } catch (error) {
             throw new Error(error.message);
          }
-       };
+    }
 
-       deleteCart = async (cartId)=> {
+    deleteCart = async (cartId)=> {
         try {
             const sql = `delete from cart where cartId in (${cartId})`
           const result = await this.cartRepository.query(sql);
@@ -49,7 +49,6 @@ class CartService {
             return 'Sản phẩm đã được xóa thành công.'
           }
             throw new Error('Sản phẩm không tồn tại.');
-          
         } catch (error) {
           throw new Error(error.message);
         }

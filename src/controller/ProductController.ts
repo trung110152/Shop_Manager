@@ -9,7 +9,7 @@ class ProductController {
 
     getProducts = async (req: Request, res: Response) => {
         try {
-          const productList = await productService.getProductList();
+          const productList = await this.productService.getProductList();
           return res.status(200).json(productList);
         } catch (error) {
           return res.status(500).json({ message: error.message });
@@ -19,7 +19,7 @@ class ProductController {
     createProduct = async (req: Request, res: Response) => {
         const productData = req.body;
         try {
-          const product = await productService.createProduct(productData);
+          const product = await this.productService.createProduct(productData);
           return res.status(200).json(product);
         } catch (error) {
           return res.status(500).json({ message: error.message });
@@ -30,7 +30,7 @@ class ProductController {
         const productId = req.params.id;
         const productData = req.body;
         try {
-          const updatedProduct = await productService.editProduct(productId, productData);
+          const updatedProduct = await this.productService.editProduct(productId, productData);
           return res.status(200).json(updatedProduct);
         } catch (error) {
           return res.status(500).json({message: error.message});
@@ -41,7 +41,7 @@ class ProductController {
     deleteProduct = async (req: Request, res: Response) => {
         const productId = req.params.id;
         try {
-          const message = await productService.deleteProduct(productId);
+          const message = await this.productService.deleteProduct(productId);
           return res.status(200).json(message);
         } catch (error) {
           return res.status(500).json({ message: error.message });
@@ -51,7 +51,7 @@ class ProductController {
       findOneByID = async (req: Request, res: Response) => {
         const productId = req.params.id;
         try {
-          const product = await productService.findOneByID(productId);
+          const product = await this.productService.findOneByID(productId);
           return res.status(200).json(product);
         } catch (error) {
           return res.status(500).json({ message: error.message });
@@ -62,7 +62,7 @@ class ProductController {
         const productName = req.query.productName;
         const categoryId = req.query.categoryId;
         try {
-          const product = await productService.findByConditions(productName,categoryId);
+          const product = await this.productService.findByConditions(productName,categoryId);
           return res.status(200).json(product);
         } catch (error) {
           return res.status(500).json({ message: error.message });

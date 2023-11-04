@@ -34,15 +34,15 @@ __decorate([
     __metadata("design:type", Number)
 ], Order.prototype, "phone", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "timestamp" }),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'datetime', default: () => 'current_timestamp' }),
+    __metadata("design:type", Date)
 ], Order.prototype, "orderDate", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Order.prototype, "totalAmount", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: 'loading' }),
     __metadata("design:type", String)
 ], Order.prototype, "status", void 0);
 Order = __decorate([

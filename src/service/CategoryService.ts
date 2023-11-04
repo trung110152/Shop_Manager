@@ -21,9 +21,9 @@ class CategoryService {
     createCategory = async (categoryData) => {
         try {
             const category = await this.categoryRepository.save(categoryData);
-          return category;
+            return category;
         } catch (error) {
-          throw new Error('Lỗi trong quá trình tạo loại.');
+            throw new Error('Lỗi trong quá trình tạo loại.');
         }
     }
 }

@@ -12,10 +12,10 @@ export class Order {
     address: string
     @Column()
     phone: number
-    @Column({type: "timestamp"})
-    orderDate: string
+    @Column({type: 'datetime', default: () => 'current_timestamp'})
+    orderDate: Date
     @Column()
     totalAmount: number // tong so tin don hang
-    @Column()
+    @Column({default: 'loading'})
     status: string
 }

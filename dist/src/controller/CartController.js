@@ -10,7 +10,7 @@ class CartController {
             const userId = req.params.id;
             try {
                 const userId = req.params.id;
-                const cart = await CartService_1.default.getCart(userId);
+                const cart = await this.cartService.getCart(userId);
                 return res.status(200).json(cart);
             }
             catch (error) {
@@ -21,19 +21,19 @@ class CartController {
             const cartData = req.body;
             let newProduct = { productId: cartData.productId, quantity: +cartData.quantity, userId: cartData.userId };
             try {
-                let carts = await CartService_1.default.getCart(cartData.userId);
+                let carts = await this.cartService.getCart(cartData.userId);
                 if (!carts.length) {
-                    carts = await CartService_1.default.createCart(newProduct);
+                    carts = await this.cartService.createCart(newProduct);
                     return res.status(200).json(carts);
                 }
                 const existingProductIndex = carts.findIndex((product) => product.productId == newProduct.productId);
                 if (existingProductIndex !== -1) {
                     newProduct.quantity += carts[existingProductIndex].quantity;
-                    carts = await CartService_1.default.updateCart({ cartId: carts[existingProductIndex].cartId }, newProduct);
+                    carts = await this.cartService.updateCart({ cartId: carts[existingProductIndex].cartId }, newProduct);
                     console.log(carts);
                 }
                 else {
-                    carts = await CartService_1.default.createCart(newProduct);
+                    carts = await this.cartService.createCart(newProduct);
                 }
                 return res.status(200).json(carts);
             }
@@ -44,7 +44,7 @@ class CartController {
         this.deleteCart = async (req, res) => {
             const cartId = req.body.cartId;
             try {
-                const message = await CartService_1.default.deleteCart(cartId);
+                const message = await this.cartService.deleteCart(cartId);
                 return res.status(200).json(message);
             }
             catch (error) {

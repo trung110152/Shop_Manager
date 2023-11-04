@@ -4,7 +4,7 @@ export declare class Order {
     receiver: string;
     address: string;
     phone: number;
-    orderDate: string;
+    orderDate: Date;
     totalAmount: number;
     status: string;
 }

@@ -11,7 +11,7 @@ class CartController {
         const userId = req.params.id;
         try {
         const userId = req.params.id;
-        const cart = await cartService.getCart(userId);
+        const cart = await this.cartService.getCart(userId);
           return res.status(200).json(cart);
         } catch (error) {
           return res.status(500).json({ message: error.message });
@@ -22,10 +22,10 @@ class CartController {
       const cartData = req.body;
       let newProduct = { productId: cartData.productId, quantity: +cartData.quantity ,userId: cartData.userId };
       try {
-        let carts = await cartService.getCart(cartData.userId);
+        let carts = await this.cartService.getCart(cartData.userId);
           
         if(!carts.length){
-          carts = await cartService.createCart(newProduct);
+          carts = await this.cartService.createCart(newProduct);
           return res.status(200).json(carts)
         }
         const existingProductIndex = carts.findIndex(
@@ -35,11 +35,11 @@ class CartController {
           
         if (existingProductIndex !== -1) {
           newProduct.quantity += carts[existingProductIndex].quantity  ;
-          carts = await cartService.updateCart({cartId:carts[existingProductIndex].cartId},newProduct)
+          carts = await this.cartService.updateCart({cartId:carts[existingProductIndex].cartId},newProduct)
           console.log(carts);
           
         } else {
-          carts = await cartService.createCart(newProduct);
+          carts = await this.cartService.createCart(newProduct);
         }
         return res.status(200).json(carts)
       } catch (error) {
@@ -50,7 +50,7 @@ class CartController {
     deleteCart = async (req: Request, res: Response) => {
       const cartId = req.body.cartId;
       try {
-        const message = await cartService.deleteCart(cartId);
+        const message = await this.cartService.deleteCart(cartId);
         return res.status(200).json(message);
       } catch (error) {
         return res.status(500).json({ message: error.message });

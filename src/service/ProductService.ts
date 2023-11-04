@@ -15,20 +15,20 @@ class ProductService {
         } catch (error) {
           throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm.');
         }
-      };
+      }
 
     createProduct= async (productData: Object) => {
         try {
             const product = await this.productRepository.save(productData);
-          return product;
+            return product;
         } catch (error) {
-          throw new Error('Lỗi trong quá trình tạo sản phẩm.');
+            throw new Error('Lỗi trong quá trình tạo sản phẩm.');
         }
     }
 
     editProduct = async (productId, productData) => {
        try {
-         const product = await this.productRepository.findOneBy({productId});
+          const product = await this.productRepository.findOneBy({productId});
           if (!product) {
             throw new Error('Sản phẩm không tồn tại.');
           }
@@ -37,7 +37,7 @@ class ProductService {
         } catch (error) {
           throw new Error(error.message);
         }
-      };
+      }
 
     deleteProduct = async (productId)=> {
         try {
@@ -63,7 +63,7 @@ class ProductService {
       } catch (error) {
         throw new Error(error.message);
       }
-    };
+    }
 
     findByConditions = async (productName, categoryId) => {
       let category ='';
@@ -77,7 +77,7 @@ class ProductService {
       } catch (error) {
         throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm.');
       }
-    };
+    }
 
 }
 

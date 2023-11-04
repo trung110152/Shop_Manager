@@ -8,7 +8,7 @@ class CategoryController {
     constructor() {
         this.getCategories = async (req, res) => {
             try {
-                const categoryList = await CategoryService_1.default.getCategories();
+                const categoryList = await this.categoryService.getCategories();
                 return res.status(200).json(categoryList);
             }
             catch (error) {
@@ -18,7 +18,7 @@ class CategoryController {
         this.createCategory = async (req, res) => {
             const categoryData = req.body;
             try {
-                const category = await CategoryService_1.default.createCategory(categoryData);
+                const category = await this.categoryService.createCategory(categoryData);
                 return res.status(200).json(category);
             }
             catch (error) {

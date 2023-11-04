@@ -9,7 +9,7 @@ class CategoryController {
 
     getCategories = async (req: Request, res: Response) => {
         try {
-          const categoryList = await categoryService.getCategories();
+          const categoryList = await this.categoryService.getCategories();
           return res.status(200).json(categoryList);
         } catch (error) {
           return res.status(500).json({ message: 'Lỗi trong quá trình lấy danh sách loại.' });
@@ -19,7 +19,7 @@ class CategoryController {
     createCategory = async (req: Request, res: Response) => {
         const categoryData = req.body;
         try {
-          const category = await categoryService.createCategory(categoryData);
+          const category = await this.categoryService.createCategory(categoryData);
           return res.status(200).json(category);
         } catch (error) {
           return res.status(500).json({ message: error.message });
