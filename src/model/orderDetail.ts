@@ -9,5 +9,7 @@ export class OrderDetail{
     @Column()
     productId: number
     @Column()
+    price: number
+    @Column()
     orderId: number
 }

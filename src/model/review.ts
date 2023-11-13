@@ -8,6 +8,8 @@ export class Review {
     userId: number
     @Column()
     productId: number
+    @Column({type: 'datetime', default: () => 'current_timestamp'})
+    reviewDate: Date
     @Column()
     rating: number // diem danh gia(tu 1 den 5)
     @Column()

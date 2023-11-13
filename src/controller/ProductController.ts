@@ -27,7 +27,7 @@ class ProductController {
       };
 
     updateProduct = async (req: Request, res: Response) => {
-        const productId = req.params.id;
+      const productId = req.params.id;
         const productData = req.body;
         try {
           const updatedProduct = await this.productService.editProduct(productId, productData);
@@ -44,7 +44,7 @@ class ProductController {
           const message = await this.productService.deleteProduct(productId);
           return res.status(200).json(message);
         } catch (error) {
-          return res.status(500).json({ message: error.message });
+          return res.status(500).json({ message: error.message});
         }
       };
 
