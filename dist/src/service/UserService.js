@@ -22,8 +22,8 @@ class UserService {
             return users;
         };
         this.checkUser = async (user) => {
-            let userCheck = await this.userRepository.findOneBy({ username: user.username });
-            if (!userCheck || userCheck.status === "unlock") {
+            let userCheck = await this.userRepository.findOneBy({ userName: user.userName });
+            if (!userCheck) {
                 return 'Username is not existed';
             }
             let comparePassword = await bcrypt_1.default.compare(user.password, userCheck.password);
@@ -32,14 +32,14 @@ class UserService {
             }
             else {
                 let payload = {
-                    username: userCheck.username,
-                    idUser: userCheck.id,
+                    userName: userCheck.userName,
+                    userId: userCheck.userId,
                     role: userCheck.role,
                 };
                 let secret = '123456';
                 let check = {
-                    username: userCheck.username,
-                    idUser: userCheck.id,
+                    userName: userCheck.userName,
+                    userId: userCheck.userId,
                     role: userCheck.role,
                     token: await jsonwebtoken_1.default.sign(payload, secret, {
                         expiresIn: 360000

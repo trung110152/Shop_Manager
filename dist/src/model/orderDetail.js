@@ -28,6 +28,10 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
+], OrderDetail.prototype, "price", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
 ], OrderDetail.prototype, "orderId", void 0);
 OrderDetail = __decorate([
     (0, typeorm_1.Entity)()

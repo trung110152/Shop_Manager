@@ -4,8 +4,8 @@ declare class UserService {
     register: (user: any) => Promise<any>;
     getAll: () => Promise<any>;
     checkUser: (user: any) => Promise<"Username is not existed" | "Password is wrong" | {
-        username: any;
-        idUser: any;
+        userName: any;
+        userId: any;
         role: any;
         token: any;
     }>;

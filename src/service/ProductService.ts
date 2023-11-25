@@ -66,8 +66,12 @@ class ProductService {
     }
 
     findByConditions = async (productName, categoryId) => {
+      let condition = `where p.productName like '%${productName}%' and p.categoryId in (${categoryId}) `
       try {
-        let sql =`select p.productId, p.productName, p.price, p.description, p.inventory, p.image, p.categoryId, c.categoryName from  shop_database.product p join shop_database.category c on p.categoryId = c.categoryId where p.productName like '%${productName}%' and p.categoryId in (${categoryId})`;
+        if(categoryId == ''){
+          condition = `where p.productName like '%${productName}%'`;
+        }
+        let sql =`select p.productId, p.productName, p.price, p.description, p.inventory, p.image, p.categoryId, c.categoryName from  shop_database.product p join shop_database.category c on p.categoryId = c.categoryId ${condition}`;
         const productList = await this.productRepository.query(sql);
         return productList;
       } catch (error) {

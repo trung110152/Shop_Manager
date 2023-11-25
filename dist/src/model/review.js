@@ -26,6 +26,10 @@ __decorate([
     __metadata("design:type", Number)
 ], Review.prototype, "productId", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'datetime', default: () => 'current_timestamp' }),
+    __metadata("design:type", Date)
+], Review.prototype, "reviewDate", void 0);
+__decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Review.prototype, "rating", void 0);

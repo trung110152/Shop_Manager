@@ -16,7 +16,7 @@ export class User {
     address: string
     @Column()
     password: string
-    @Column({default: 1})
+    @Column({default: 2}) // 1: admin, 2: user
     role: number
 
 }
