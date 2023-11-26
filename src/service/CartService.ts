@@ -40,6 +40,7 @@ class CartService {
     }
 
     deleteCart = async (cartId)=> {
+        
         try {
             const sql = `delete from cart where cartId in (${cartId})`
           const result = await this.cartRepository.query(sql);

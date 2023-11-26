@@ -5,4 +5,4 @@ export const cartRouter = Router();
 
 cartRouter.get('/:id', cartController.getCart); // useId
 cartRouter.post('/', cartController.productAddToCart); // body: userId, productId, quantity
-cartRouter.delete('/', cartController.deleteCart); // body: cartId là 1 chuỗi gồm những cartId muốn xóa
+cartRouter.delete('/', cartController.deleteCart); // ?cartId=chuoi danh sach cartId can xoa ( vd '1,2,..')

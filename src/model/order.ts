@@ -15,7 +15,7 @@ export class Order {
     @Column({type: 'datetime', default: () => 'current_timestamp'})
     orderDate: Date
     @Column()
-    totalAmount: number // tong so tin don hang
+    totalAmount: number // tong so tien don hang
     @Column({default: 'loading'})
     status: string
 }

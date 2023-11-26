@@ -25,8 +25,8 @@ class OrderService {
         };
         this.createOrderDetail = async (orderDetailData) => {
             try {
-                const values = await orderDetailData.map(element => `(${element.productId}, ${element.orderId}, ${element.quantity})`).join(',');
-                const sql = `INSERT INTO order_detail (productId, orderId, quantity) VALUES ${values}`;
+                const values = await orderDetailData.map(element => `(${element.productId}, ${element.orderId}, ${element.quantity}, ${element.price})`).join(',');
+                const sql = `INSERT INTO order_detail (productId, orderId, quantity, price) VALUES ${values}`;
                 await this.orderDetailRepository.query(sql);
                 return 'Tạo chi tiết đơn hàng thành công';
             }
