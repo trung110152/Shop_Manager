@@ -9,7 +9,7 @@ class UserController {
         this.userService = userService;
     }
 
-    getAll = async (req: Request, res: Response) => {
+    getUser = async (req: Request, res: Response) => {
         try{
             let users = await userService.getAll();
             res.status(200).json(users)

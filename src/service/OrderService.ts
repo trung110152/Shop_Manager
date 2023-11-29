@@ -11,14 +11,18 @@ class OrderService {
     }
 
     getOrders = async (userId) => {
+        let sql = '';
         try {
-            const orderList = await this.orderRepository.find({userId: userId});
-            return orderList;
+            if(userId != 0){
+                sql =` o where o.userId = ${userId}`;
+            }
+           
+            const order = await this.orderRepository.query(`select * from shop_database.order ${sql}`);
+            return order;
         } catch (error) {
-            throw new Error('Lỗi trong quá trình lấy danh đơn.');
+            throw new Error(error.message);
         }
-        
-    }
+      }
 
     createOrder = async (orderData) => {
         try {
@@ -26,6 +30,39 @@ class OrderService {
             return order;
         } catch (error) {
            throw new Error('Lỗi trong quá trình tạo đơn hàng.');
+        }
+    }
+
+    editOrder = async (orderId) => {
+        try {
+            let sql = `UPDATE shop_database.order o SET status = "moving" WHERE o.orderId = ${orderId}`;
+            const res = await this.orderRepository.query(sql);
+            if(res.protocol41 === true){
+                const order =  await this.orderRepository.query(`select * from shop_database.order o where o.orderId = ${orderId} `)
+                return order[0];
+            }
+            throw new Error('Lỗi trong quá trình chuyển trạng thái đơn hàng.');
+        } catch (error) {
+           throw new Error('Lỗi trong quá trình chuyển trạng thái đơn hàng.');
+        }
+    }
+
+    findOrder = async (orderId) => {
+        try {
+            const order = await this.orderRepository.query(`select * from shop_database.order o where o.orderId = ${orderId}`);
+            return order[0];
+        } catch (error) {
+           throw new Error(error.message);
+        }
+    }
+
+    findOrderDetail = async (orderId) => {
+        try {
+            const sql = `select o.orderDetailId, o.quantity, o.productId, p.productName, o.price  from order_detail o join product p on o.productId = p.productId where o.orderId = ${orderId}`
+            const orderDetail =  await this.orderDetailRepository.query(sql);
+            return orderDetail;
+        } catch (error) {
+           throw new Error(error.message);
         }
     }
 
