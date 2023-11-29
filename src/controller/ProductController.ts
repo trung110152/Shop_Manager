@@ -48,15 +48,15 @@ class ProductController {
         }
       };
 
-      findOneByID = async (req: Request, res: Response) => {
-        const productId = req.params.id;
-        try {
-          const product = await this.productService.findOneByID(productId);
-          return res.status(200).json(product);
-        } catch (error) {
-          return res.status(500).json({ message: error.message });
-        }
-      };
+    findOneByID = async (req: Request, res: Response) => {
+      const productId = req.params.id;
+      try {
+        const product = await this.productService.findOneByID(productId);
+        return res.status(200).json(product);
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
+      }
+    };
 
       findByConditions = async (req: Request, res: Response) => {
         const productName = req.query.productName;

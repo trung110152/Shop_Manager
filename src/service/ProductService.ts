@@ -37,7 +37,7 @@ class ProductService {
         } catch (error) {
           throw new Error(error.message);
         }
-      }
+    }
 
     deleteProduct = async (productId)=> {
         try {

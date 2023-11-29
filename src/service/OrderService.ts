@@ -43,12 +43,14 @@ class OrderService {
         return arr.every(item => 
           item.hasOwnProperty('productId') && 
           item.hasOwnProperty('quantity') &&
+          item.hasOwnProperty('price') &&
           typeof item.productId === 'number' && 
           typeof item.quantity === 'number' && 
           item.productId > 0 && 
+          item.price >= 0 &&
           item.quantity > 0
           )
-        }
+    }
 }
 
 export default new OrderService();

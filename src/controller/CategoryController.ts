@@ -25,6 +25,27 @@ class CategoryController {
           return res.status(500).json({ message: error.message });
         }
       };
+
+    editCategory = async (req: Request, res: Response) => {
+    const categoryId = req.params.id;
+      const categoryData = req.body;
+      try {
+        const editCategory = await this.categoryService.editCategory(categoryId, categoryData);
+        return res.status(200).json(editCategory);
+      } catch (error) {
+        return res.status(500).json({message: error.message});
+      }
+    };
+
+    findOneByID = async (req: Request, res: Response) => {
+      const categoryId = req.params.id;
+      try {
+        const category = await this.categoryService.findOneByID(categoryId);
+        return res.status(200).json(category);
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
+      }
+    };
 }
 
 export default new CategoryController();
