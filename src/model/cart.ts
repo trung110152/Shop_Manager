@@ -9,6 +9,17 @@ export class Cart {
     @Column()
     productId: number
     @Column()
+    productName: string
+    @Column()
+    price: number
+    @Column()
+    description: string
+    @Column()
+    inventory: number
+    @Column()
+    categoryId: number
+    @Column()
+    image: string
+    @Column()
     quantity: number
-
 }

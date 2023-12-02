@@ -1,15 +1,26 @@
 import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Product } from "./product";
 
 @Entity()
 export class OrderDetail{
     @PrimaryGeneratedColumn()
     orderDetailId: number
     @Column()
-    quantity: number
+    orderId: number
     @Column()
     productId: number
     @Column()
+    productName: string
+    @Column()
     price: number
     @Column()
-    orderId: number
+    description: string
+    @Column()
+    inventory: number
+    @Column()
+    categoryId: number
+    @Column()
+    image: string
+    @Column()
+    quantity: number
 }

@@ -58,7 +58,7 @@ class OrderService {
 
     findOrderDetail = async (orderId) => {
         try {
-            const sql = `select o.orderDetailId, o.quantity, o.productId, p.productName, o.price  from order_detail o join product p on o.productId = p.productId where o.orderId = ${orderId}`
+            const sql = `select * from order_detail o where o.orderId = ${orderId}`
             const orderDetail =  await this.orderDetailRepository.query(sql);
             return orderDetail;
         } catch (error) {
@@ -68,26 +68,23 @@ class OrderService {
 
     createOrderDetail = async (orderDetailData) => {
         try {
-            const values = await orderDetailData.map(element => `(${element.productId}, ${element.orderId}, ${element.quantity}, ${element.price})`).join(',');
-            const sql = `INSERT INTO order_detail (productId, orderId, quantity, price) VALUES ${values}`;
+            const values = await orderDetailData.map(element => `(${element.orderId}, ${element.productId}, "${element.productName}", ${element.price}, "${element.description}", ${element.inventory}, ${element.categoryId}, "${element.image}", ${element.quantity})`).join(',');
+            const sql = `INSERT INTO order_detail (orderId, productId, productName, price, description, inventory, categoryId, image, quantity) VALUES ${values}`;
             await this.orderDetailRepository.query(sql);
-            return 'Tạo chi tiết đơn hàng thành công'
+            return 'Tạo chi tiết đơn hàng thành công';
         } catch (error) {
-           throw new Error(error.message);
+            throw new Error(error.message);
         }
     }
+    
     checkOrderDetailData = (arr) => {
         return arr.every(item => 
-          item.hasOwnProperty('productId') && 
           item.hasOwnProperty('quantity') &&
-          item.hasOwnProperty('price') &&
-          typeof item.productId === 'number' && 
           typeof item.quantity === 'number' && 
-          item.productId > 0 && 
-          item.price >= 0 &&
           item.quantity > 0
           )
     }
+
 }
 
 export default new OrderService();
