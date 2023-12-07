@@ -8,7 +8,7 @@ class OrderController {
     constructor() {
         this.getOrders = async (req, res) => {
             try {
-                const userId = req.params.id || 0;
+                const userId = req.params.id;
                 const orderList = await this.orderService.getOrders(userId);
                 return res.status(200).json(orderList);
             }
@@ -27,6 +27,28 @@ class OrderController {
                 await orderDetailData.forEach(element => element.orderId = order.orderId);
                 await this.orderService.createOrderDetail(orderDetailData);
                 return res.status(200).json('Tạo đơn hàng thành công');
+            }
+            catch (error) {
+                return res.status(500).json({ message: error.message });
+            }
+        };
+        this.editOrder = async (req, res) => {
+            const orderId = req.params.id;
+            try {
+                const order = await this.orderService.editOrder(orderId);
+                return res.status(200).json(order);
+            }
+            catch (error) {
+                return res.status(500).json({ message: error.message });
+            }
+        };
+        this.orderDetail = async (req, res) => {
+            const orderId = req.params.id;
+            try {
+                const order = await this.orderService.findOrder(orderId);
+                const orderDetail = await this.orderService.findOrderDetail(orderId);
+                const result = { order: order, orderDetail };
+                return res.status(200).json(result);
             }
             catch (error) {
                 return res.status(500).json({ message: error.message });

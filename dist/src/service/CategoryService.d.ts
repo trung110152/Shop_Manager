@@ -3,6 +3,8 @@ declare class CategoryService {
     constructor();
     getCategories: () => Promise<any>;
     createCategory: (categoryData: any) => Promise<any>;
+    editCategory: (categoryId: any, categoryData: any) => Promise<string>;
+    findOneByID: (categoryId: any) => Promise<any>;
 }
 declare const _default: CategoryService;
 export default _default;

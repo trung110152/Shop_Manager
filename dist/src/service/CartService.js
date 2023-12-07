@@ -6,7 +6,7 @@ class CartService {
     constructor() {
         this.getCart = async (userId) => {
             try {
-                const sql = `select c.cartId, c.userId, c.productId, c.quantity, p.productName, p.price, p.description, p.inventory, p.categoryId, p.image from cart c join product p on c.productId = p.productId where c.userId = ${userId}`;
+                const sql = `select * from cart c where c.userId = ${userId}`;
                 const cart = await this.cartRepository.query(sql);
                 return cart;
             }

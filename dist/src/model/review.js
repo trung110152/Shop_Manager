@@ -30,13 +30,17 @@ __decorate([
     __metadata("design:type", Date)
 ], Review.prototype, "reviewDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: 0 }),
     __metadata("design:type", Number)
 ], Review.prototype, "rating", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Review.prototype, "comment", void 0);
+__decorate([
+    (0, typeorm_1.Column)("simple-json"),
+    __metadata("design:type", Object)
+], Review.prototype, "reply", void 0);
 Review = __decorate([
     (0, typeorm_1.Entity)()
 ], Review);

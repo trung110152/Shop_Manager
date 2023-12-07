@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const UserService_1 = __importDefault(require("../service/UserService"));
 class UserController {
     constructor() {
-        this.getAll = async (req, res) => {
+        this.getUser = async (req, res) => {
             try {
                 let users = await UserService_1.default.getAll();
                 res.status(200).json(users);

@@ -7,11 +7,7 @@ class ReviewService {
         this.createReview = async (reviewData) => {
             try {
                 const review = await this.reviewRepository.save(reviewData);
-                if (review) {
-                    const result = await this.findOneById(review.reviewId);
-                    return result;
-                }
-                throw new Error('Lỗi trong quá trình tạo review.');
+                return review;
             }
             catch (error) {
                 throw new Error('Lỗi trong quá trình tạo review và lấy review');
@@ -19,12 +15,15 @@ class ReviewService {
         };
         this.getReviews = async (productId) => {
             try {
-                const sql = `select u.userName, r.* from review r join user u on r.userId = u.userId where r.productId = ${productId}`;
+                const sql = `select u.userName, u.role, r.* from review r join user u on r.userId = u.userId where r.productId = ${productId}`;
                 const reviews = await this.reviewRepository.query(sql);
+                if (reviews.length > 0) {
+                    reviews.map(item => item.reply = JSON.parse(item.reply));
+                }
                 return reviews;
             }
             catch (error) {
-                throw new Error('Lỗi trong quá trình lấy thông tin danh sách reviews sản phẩm.');
+                throw new Error('Lỗi trong quá trình lấy thông tin danh sách reviews sản phẩm.' + error.message);
             }
         };
         this.findOneById = async (reviewId) => {
@@ -37,14 +36,34 @@ class ReviewService {
                 throw new Error('Lỗi trong quá trình lấy thông tin review sản phẩm.');
             }
         };
-        this.updateReview = async (reviewId, reviewData) => {
+        this.editReview = async (reviewId, reviewData) => {
             try {
-                await this.reviewRepository.update(reviewId, reviewData);
-                const review = await this.findOneById(reviewId);
-                return review;
+                await this.reviewRepository.update(reviewId, { comment: reviewData });
+                return "Edit comment hoan thanh";
             }
             catch (error) {
                 throw new Error("Lỗi trong quá trình sửa review");
+            }
+        };
+        this.replyReview = async (reviewId, reviewData) => {
+            try {
+                await this.reviewRepository.update(reviewId, { reply: reviewData });
+                return "Reply hoan thanh";
+            }
+            catch (error) {
+                throw new Error("Lỗi trong quá trình sửa review");
+            }
+        };
+        this.deleteReview = async (reviewId) => {
+            try {
+                const result = await this.reviewRepository.delete(reviewId);
+                if (result.affected === 1) {
+                    return 'Review đã được xóa thành công.';
+                }
+                throw new Error('Review không tồn tại.');
+            }
+            catch (error) {
+                throw new Error(error.message);
             }
         };
         this.reviewRepository = data_source_1.AppDataSource.getRepository(review_1.Review);

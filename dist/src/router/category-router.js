@@ -9,4 +9,6 @@ const CategoryController_1 = __importDefault(require("../controller/CategoryCont
 exports.categoryRouter = (0, express_1.Router)();
 exports.categoryRouter.get('/', CategoryController_1.default.getCategories);
 exports.categoryRouter.post('/', CategoryController_1.default.createCategory);
+exports.categoryRouter.put('/:id', CategoryController_1.default.editCategory);
+exports.categoryRouter.get('/:id', CategoryController_1.default.findOneByID);
 //# sourceMappingURL=category-router.js.map

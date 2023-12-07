@@ -18,10 +18,9 @@ class CartController {
             }
         };
         this.productAddToCart = async (req, res) => {
-            const cartData = req.body;
-            let newProduct = { productId: cartData.productId, quantity: +cartData.quantity, userId: cartData.userId };
+            let newProduct = req.body;
             try {
-                let carts = await this.cartService.getCart(cartData.userId);
+                let carts = await this.cartService.getCart(newProduct.userId);
                 if (!carts.length) {
                     carts = await this.cartService.createCart(newProduct);
                     return res.status(200).json(carts);

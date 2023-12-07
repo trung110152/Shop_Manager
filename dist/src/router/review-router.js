@@ -9,5 +9,7 @@ const ReviewController_1 = __importDefault(require("../controller/ReviewControll
 exports.reviewRouter = (0, express_1.Router)();
 exports.reviewRouter.get('/:id', ReviewController_1.default.getReviews);
 exports.reviewRouter.post('/', ReviewController_1.default.createReview);
-exports.reviewRouter.put('/:id', ReviewController_1.default.updateReview);
+exports.reviewRouter.put('/editReview', ReviewController_1.default.editReview);
+exports.reviewRouter.put('/replyReview', ReviewController_1.default.replyReview);
+exports.reviewRouter.delete('/:id', ReviewController_1.default.deleteReview);
 //# sourceMappingURL=review-router.js.map

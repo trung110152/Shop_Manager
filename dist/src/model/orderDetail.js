@@ -20,19 +20,39 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], OrderDetail.prototype, "quantity", void 0);
+], OrderDetail.prototype, "orderId", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], OrderDetail.prototype, "productId", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], OrderDetail.prototype, "productName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], OrderDetail.prototype, "price", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], OrderDetail.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], OrderDetail.prototype, "orderId", void 0);
+], OrderDetail.prototype, "inventory", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], OrderDetail.prototype, "categoryId", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], OrderDetail.prototype, "image", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], OrderDetail.prototype, "quantity", void 0);
 OrderDetail = __decorate([
     (0, typeorm_1.Entity)()
 ], OrderDetail);
