@@ -34,14 +34,18 @@ class UserService {
             return 'Password is wrong';
         } else {
             let payload = {
-                userName: userCheck.userName,
                 userId: userCheck.userId,
+                userName: userCheck.userName,
                 role: userCheck.role,
             }
             let secret = '123456';
             let check ={
-                userName: userCheck.userName,
                 userId: userCheck.userId,
+                userName: userCheck.userName,
+                birthDay: userCheck.birthDay,
+                email: userCheck.email,
+                phone: userCheck.phone,
+                address: userCheck.address,
                 role: userCheck.role,
                 token: await jwt.sign(payload, secret, {
                     expiresIn: 360000
@@ -57,16 +61,54 @@ class UserService {
     }
 
 
-    findById = async (id)=> {
-        let user = await this.userRepository.findOneBy({id:id});
+    findById = async (userId)=> {
+        let user = await this.userRepository.findOneBy({userId:userId});
         if(!user){
             return null;
         }
         return user;
     }
 
-    update = async (id, newUser)=> {
-        return await this.userRepository.update({id: id}, newUser);
+    update = async (userId, newUser)=> {
+        try {
+            await this.userRepository.update(userId, newUser);
+            const result = await this.userRepository.findOneBy({userId:userId});
+            
+            const payload = {
+                userId: result.userId,
+                userName: result.userName,
+                role: result.role,
+            }
+            const secret = '123456';
+            const resp ={
+                userId: result.userId,
+                userName: result.userName,
+                birthDay: result.birthDay,
+                email: result.email,
+                phone: result.phone,
+                address: result.address,
+                role: result.role,
+                token: await jwt.sign(payload, secret, {
+                    expiresIn: 360000
+                })
+            };
+            return resp
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    changePw = async (userId, newPw) => {
+        try {
+            const password = await bcrypt.hash(newPw,10)
+            const resp = await this.userRepository.update(userId, {password: password});
+            if(resp.affected === 1){
+               return "Đổi mật khẩu thành công"; 
+            }
+            throw new Error("Đổi mật khẩu thất bại")
+        } catch (error) {
+            throw new Error(error.message)
+        }
     }
 }
 

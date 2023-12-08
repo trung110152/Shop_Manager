@@ -22,7 +22,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "userName", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)("date"),
     __metadata("design:type", Date)
 ], User.prototype, "birthDay", void 0);
 __decorate([

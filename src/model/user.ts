@@ -6,7 +6,7 @@ export class User {
     userId: number
     @Column()
     userName: string
-    @Column()
+    @Column("date")
     birthDay: Date
     @Column()
     email: string

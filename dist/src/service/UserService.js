@@ -32,14 +32,18 @@ class UserService {
             }
             else {
                 let payload = {
-                    userName: userCheck.userName,
                     userId: userCheck.userId,
+                    userName: userCheck.userName,
                     role: userCheck.role,
                 };
                 let secret = '123456';
                 let check = {
-                    userName: userCheck.userName,
                     userId: userCheck.userId,
+                    userName: userCheck.userName,
+                    birthDay: userCheck.birthDay,
+                    email: userCheck.email,
+                    phone: userCheck.phone,
+                    address: userCheck.address,
                     role: userCheck.role,
                     token: await jsonwebtoken_1.default.sign(payload, secret, {
                         expiresIn: 360000
@@ -51,15 +55,53 @@ class UserService {
         this.save = async (user) => {
             return this.userRepository.save(user);
         };
-        this.findById = async (id) => {
-            let user = await this.userRepository.findOneBy({ id: id });
+        this.findById = async (userId) => {
+            let user = await this.userRepository.findOneBy({ userId: userId });
             if (!user) {
                 return null;
             }
             return user;
         };
-        this.update = async (id, newUser) => {
-            return await this.userRepository.update({ id: id }, newUser);
+        this.update = async (userId, newUser) => {
+            try {
+                await this.userRepository.update(userId, newUser);
+                const result = await this.userRepository.findOneBy({ userId: userId });
+                const payload = {
+                    userId: result.userId,
+                    userName: result.userName,
+                    role: result.role,
+                };
+                const secret = '123456';
+                const resp = {
+                    userId: result.userId,
+                    userName: result.userName,
+                    birthDay: result.birthDay,
+                    email: result.email,
+                    phone: result.phone,
+                    address: result.address,
+                    role: result.role,
+                    token: await jsonwebtoken_1.default.sign(payload, secret, {
+                        expiresIn: 360000
+                    })
+                };
+                return resp;
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
+        };
+        this.changePw = async (userId, newPw) => {
+            try {
+                const password = await bcrypt_1.default.hash(newPw, 10);
+                const resp = await this.userRepository.update(userId, { password: password });
+                if (resp.affected === 1) {
+                    return "Đổi mật khẩu thành công";
+                }
+                throw new Error("Đổi mật khẩu thất bại");
+            }
+            catch (error) {
+                throw new Error(error.message);
+            }
         };
         this.userRepository = data_source_1.AppDataSource.getRepository(user_1.User);
     }

@@ -5,3 +5,5 @@ export const userRouter = Router();
 userRouter.post('/login', userController.login);
 userRouter.post('/register', userController.register);
 userRouter.get('/', userController.getUser);
+userRouter.put('/', userController.editUserInfo);
+userRouter.put('/changePw', userController.changePw);

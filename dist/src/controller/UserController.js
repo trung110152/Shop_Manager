@@ -23,6 +23,28 @@ class UserController {
             let user = await this.userService.register(req.body);
             res.status(201).json(user);
         };
+        this.editUserInfo = async (req, res) => {
+            const newUser = req.body;
+            const userId = req.body.userId;
+            try {
+                const resp = await UserService_1.default.update(userId, newUser);
+                res.status(200).json(resp);
+            }
+            catch (e) {
+                res.status(500).json(e.message);
+            }
+        };
+        this.changePw = async (req, res) => {
+            const newPw = req.body.password;
+            const userId = req.body.userId;
+            try {
+                const resp = await UserService_1.default.changePw(userId, newPw);
+                res.status(200).json(resp);
+            }
+            catch (e) {
+                res.status(500).json(e.message);
+            }
+        };
         this.userService = UserService_1.default;
     }
 }
