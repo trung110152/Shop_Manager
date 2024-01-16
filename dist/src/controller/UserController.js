@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const UserService_1 = __importDefault(require("../service/UserService"));
+const otp_generator_1 = __importDefault(require("otp-generator"));
 class UserController {
     constructor() {
         this.getUser = async (req, res) => {
@@ -20,6 +21,7 @@ class UserController {
             res.status(200).json(response);
         };
         this.register = async (req, res) => {
+            console.log(req.body);
             let user = await this.userService.register(req.body);
             res.status(201).json(user);
         };
@@ -43,6 +45,35 @@ class UserController {
             }
             catch (e) {
                 res.status(500).json(e.message);
+            }
+        };
+        this.sendOTP = async (req, res) => {
+            try {
+                const { email } = req.body;
+                var otp = otp_generator_1.default.generate(6, {
+                    upperCaseAlphabets: false,
+                    lowerCaseAlphabets: false,
+                    specialChars: false,
+                });
+                const result = await UserService_1.default.findOTP({ otp: otp });
+                while (result == true) {
+                    otp = otp_generator_1.default.generate(6, {
+                        upperCaseAlphabets: false,
+                    });
+                }
+                const otpPayload = { email, otp };
+                const otpBody = await UserService_1.default.mailSender(otpPayload);
+                if (!otpBody) {
+                    return res.status(500).json({ success: false, error: 'Interal Server' });
+                }
+                res.status(200).json({
+                    success: true,
+                    message: `OTP Sent Successfully`,
+                    otp,
+                });
+            }
+            catch (error) {
+                return res.status(500).json({ success: false, error: error.message });
             }
         };
         this.userService = UserService_1.default;

@@ -3,20 +3,30 @@ import {User} from "../model/user";
 import {AppDataSource} from "../data-source";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import { OTP } from "../model/OTP";
+import { log } from "winston";
 
 class UserService {
     private userRepository;
+    private otpRepository;
     constructor() {
         this.userRepository = AppDataSource.getRepository(User)
+        this.otpRepository = AppDataSource.getRepository(OTP)
     }
 
-    register = async (user) =>{
+    register = async ({ user, otp }) =>{
         let userCheck = await this.userRepository.findOneBy({userName: user.userName})
-        if (!userCheck) {
-            user.password = await bcrypt.hash(user.password,10);
-            return this.userRepository.save(user);
+        if (userCheck) {
+            return 'Username registered';
         }
-        return 'Username registered';
+        const getOTP = await this.otpRepository.find({ email: userCheck.email });
+        console.log(getOTP)
+        if( getOTP[getOTP.length - 1].otp !== otp.otp){
+            return 'OTP code is incorrect';
+        }
+        user.password = await bcrypt.hash(user.password,10);
+        return this.userRepository.save(user);
     }
 
     getAll = async () => {
@@ -68,6 +78,13 @@ class UserService {
         }
         return user;
     }
+    findByEmail = async ({ email })=> {
+        let user = await this.userRepository.findOneBy( email );
+        if(!user){
+            return null;
+        }
+        return user;
+    }
 
     update = async (userId, newUser)=> {
         try {
@@ -110,6 +127,47 @@ class UserService {
             throw new Error(error.message)
         }
     }
+
+    findOTP = async ( otp )=> {
+        let result = await this.otpRepository.findOneBy( otp );
+        if(!result){
+            return false;
+        }
+        return true;
+    }
+
+    mailSender = async ({ email, otp })=>{
+    try {
+            //to send email ->  firstly create a Transporter
+            let transporter = await nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                auth: {
+                  user: 'trung110152@gmail.com', 
+                  pass: 'giho zhrr sghw eakr'  
+                }
+                }); 
+
+            //now Send e-mails to users
+            let info = await transporter.sendMail({
+                from: 'trung110152@gmail.com',
+                to:`${email}`,
+                subject: "Verification Email",
+                html: `<h1>Please confirm your OTP </h1>
+                <p> here is your OTP code:-> ${otp} </p>
+               `,
+            })
+            if( info ){
+                await this.otpRepository.save({ email, otp })
+            }
+
+            // console.log("Info is here: ",info)
+            return info
+
+        } catch (error) {
+            return error.message;
+        }
+    }
+    
 }
 
 export default new UserService();

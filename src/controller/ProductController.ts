@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import productService from "../service/ProductService";
+const winston = require('winston');
 class ProductController {
     private productService;
      constructor() {
@@ -40,6 +41,18 @@ class ProductController {
 
     deleteProduct = async (req: Request, res: Response) => {
         const productId = req.params.id;
+        const logger = winston.createLogger({
+          level: process.env.LOG_LEVEL || 'debug',
+          format: winston.format.simple(),
+          transports: [
+            new winston.transports.Console(),
+            new winston.transports.File({dirname: 'logs', filename: 'combined.log' }),
+          ],
+        });
+        if(productId == '0'){
+          logger.error('ProductId not define');
+          
+        }
         try {
           const message = await this.productService.deleteProduct(productId);
           return res.status(200).json(message);

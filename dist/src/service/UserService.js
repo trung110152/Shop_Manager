@@ -7,15 +7,22 @@ const user_1 = require("../model/user");
 const data_source_1 = require("../data-source");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
+const OTP_1 = require("../model/OTP");
 class UserService {
     constructor() {
-        this.register = async (user) => {
+        this.register = async ({ user, otp }) => {
             let userCheck = await this.userRepository.findOneBy({ userName: user.userName });
-            if (!userCheck) {
-                user.password = await bcrypt_1.default.hash(user.password, 10);
-                return this.userRepository.save(user);
+            if (userCheck) {
+                return 'Username registered';
             }
-            return 'Username registered';
+            const getOTP = await this.otpRepository.find({ email: user.email });
+            console.log(getOTP);
+            if (getOTP[getOTP.length - 1].otp !== otp.otp) {
+                return 'OTP code is incorrect';
+            }
+            user.password = await bcrypt_1.default.hash(user.password, 10);
+            return this.userRepository.save(user);
         };
         this.getAll = async () => {
             let users = await this.userRepository.find();
@@ -62,6 +69,13 @@ class UserService {
             }
             return user;
         };
+        this.findByEmail = async ({ email }) => {
+            let user = await this.userRepository.findOneBy(email);
+            if (!user) {
+                return null;
+            }
+            return user;
+        };
         this.update = async (userId, newUser) => {
             try {
                 await this.userRepository.update(userId, newUser);
@@ -103,7 +117,41 @@ class UserService {
                 throw new Error(error.message);
             }
         };
+        this.findOTP = async (otp) => {
+            let result = await this.otpRepository.findOneBy(otp);
+            if (!result) {
+                return false;
+            }
+            return true;
+        };
+        this.mailSender = async ({ email, otp }) => {
+            try {
+                let transporter = await nodemailer_1.default.createTransport({
+                    host: 'smtp.gmail.com',
+                    auth: {
+                        user: 'trung110152@gmail.com',
+                        pass: 'giho zhrr sghw eakr'
+                    }
+                });
+                let info = await transporter.sendMail({
+                    from: 'trung110152@gmail.com',
+                    to: `${email}`,
+                    subject: "Verification Email",
+                    html: `<h1>Please confirm your OTP </h1>
+                <p> here is your OTP code:-> ${otp} </p>
+               `,
+                });
+                if (info) {
+                    await this.otpRepository.save({ email, otp });
+                }
+                return info;
+            }
+            catch (error) {
+                return error.message;
+            }
+        };
         this.userRepository = data_source_1.AppDataSource.getRepository(user_1.User);
+        this.otpRepository = data_source_1.AppDataSource.getRepository(OTP_1.OTP);
     }
 }
 exports.default = new UserService();

@@ -1,5 +1,7 @@
 import {Request, Response} from "express";
 import userService from "../service/UserService";
+import otpGenerator from "otp-generator";
+import { log } from "winston";
 
 
 class UserController {
@@ -24,6 +26,7 @@ class UserController {
     }
 
     register = async (req: Request, res: Response) => {
+        console.log(req.body)
         let user = await this.userService.register(req.body);
         res.status(201).json(user);
     }
@@ -49,6 +52,56 @@ class UserController {
             res.status(500).json(e.message)
         }
     }
+
+    sendOTP = async ( req, res ) => {
+        try {
+            const { email } = req.body;
+    
+            // Check if user is already present
+            // Find user with provided email
+            // const checkUserPresent = await userService.findByEmail({ email });
+            // // to be used in case of signup
+    
+            // // If user found with provided email
+            // if (checkUserPresent) {
+            //     // Return 401 Unauthorized status code with error message
+            //     return res.status(401).json({
+            //         success: false,
+            //         message: `User is Already Registered`,
+            //     });
+            // }
+    
+            var otp = otpGenerator.generate(6, {
+                upperCaseAlphabets: false,
+                lowerCaseAlphabets: false,
+                specialChars: false,
+            });
+            const result = await userService.findOTP({ otp: otp });
+            // console.log("Result is Generate OTP Func");
+            // console.log("OTP", otp);
+            // console.log("Result", result);
+            while (result == true ) {
+                otp = otpGenerator.generate(6, {
+                    upperCaseAlphabets: false,
+                });
+            }
+            const otpPayload = { email, otp };
+            const otpBody = await userService.mailSender( otpPayload );
+            // console.log("OTP Body", otpBody);
+            if( !otpBody ){
+                return res.status(500).json({ success: false, error: 'Interal Server' });
+            }
+            
+            res.status(200).json({
+                success: true,
+                message: `OTP Sent Successfully`,
+                otp,
+            });
+        } catch (error) {
+            // console.log(error.message);
+            return res.status(500).json({ success: false, error: error.message });
+        }
+    };
 
 }
 

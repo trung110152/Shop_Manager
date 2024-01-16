@@ -7,3 +7,4 @@ userRouter.post('/register', userController.register);
 userRouter.get('/', userController.getUser);
 userRouter.put('/', userController.editUserInfo);
 userRouter.put('/changePw', userController.changePw);
+userRouter.post('/sendOTP', userController.sendOTP);
