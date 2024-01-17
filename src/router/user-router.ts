@@ -8,3 +8,4 @@ userRouter.get('/', userController.getUser);
 userRouter.put('/', userController.editUserInfo);
 userRouter.put('/changePw', userController.changePw);
 userRouter.post('/sendOTP', userController.sendOTP);
+userRouter.post('/checkUsernameExist', userController.checkUsernameExist)

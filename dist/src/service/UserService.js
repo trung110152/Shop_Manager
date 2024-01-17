@@ -17,8 +17,7 @@ class UserService {
                 return 'Username registered';
             }
             const getOTP = await this.otpRepository.find({ email: user.email });
-            console.log(getOTP);
-            if (getOTP[getOTP.length - 1].otp !== otp.otp) {
+            if (getOTP[getOTP.length - 1].otp !== otp) {
                 return 'OTP code is incorrect';
             }
             user.password = await bcrypt_1.default.hash(user.password, 10);
@@ -64,6 +63,13 @@ class UserService {
         };
         this.findById = async (userId) => {
             let user = await this.userRepository.findOneBy({ userId: userId });
+            if (!user) {
+                return null;
+            }
+            return user;
+        };
+        this.findByUsername = async (userName) => {
+            const user = await this.userRepository.findOneBy(userName);
             if (!user) {
                 return null;
             }
@@ -136,14 +142,15 @@ class UserService {
                 let info = await transporter.sendMail({
                     from: 'trung110152@gmail.com',
                     to: `${email}`,
-                    subject: "Verification Email",
-                    html: `<h1>Please confirm your OTP </h1>
-                <p> here is your OTP code:-> ${otp} </p>
+                    subject: "Email xác minh từ Shop NgoNam",
+                    html: `<h1>Vui lòng xác nhận OTP của bạn </h1>
+                <p> Đây là mã OTP của bạn :-> ${otp} </p>
                `,
                 });
-                if (info) {
-                    await this.otpRepository.save({ email, otp });
+                if (!info) {
+                    return null;
                 }
+                await this.otpRepository.save({ email, otp });
                 return info;
             }
             catch (error) {

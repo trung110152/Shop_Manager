@@ -13,4 +13,5 @@ exports.userRouter.get('/', UserController_1.default.getUser);
 exports.userRouter.put('/', UserController_1.default.editUserInfo);
 exports.userRouter.put('/changePw', UserController_1.default.changePw);
 exports.userRouter.post('/sendOTP', UserController_1.default.sendOTP);
+exports.userRouter.post('/checkUsernameExist', UserController_1.default.checkUsernameExist);
 //# sourceMappingURL=user-router.js.map

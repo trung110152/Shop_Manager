@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 declare class UserController {
     private userService;
     constructor();
+    checkUsernameExist: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     getUser: (req: Request, res: Response) => Promise<void>;
     login: (req: Request, res: Response) => Promise<void>;
     register: (req: Request, res: Response) => Promise<void>;

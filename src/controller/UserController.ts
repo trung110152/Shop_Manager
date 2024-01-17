@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import userService from "../service/UserService";
 import otpGenerator from "otp-generator";
-import { log } from "winston";
 
 
 class UserController {
@@ -9,6 +8,18 @@ class UserController {
 
     constructor() {
         this.userService = userService;
+    }
+
+    checkUsernameExist = async (req: Request, res: Response) => {
+        try{
+            const result = await userService.findByUsername( req.body );
+            if(result){
+                return res.status(200).json("Username is existed")
+            }
+            return res.status(200).json("Username is valid")
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
     }
 
     getUser = async (req: Request, res: Response) => {
@@ -26,7 +37,6 @@ class UserController {
     }
 
     register = async (req: Request, res: Response) => {
-        console.log(req.body)
         let user = await this.userService.register(req.body);
         res.status(201).json(user);
     }
@@ -99,7 +109,9 @@ class UserController {
             });
         } catch (error) {
             // console.log(error.message);
-            return res.status(500).json({ success: false, error: error.message });
+            return res.status(500).json({ 
+                success: false, 
+                error: error.message });
         }
     };
 

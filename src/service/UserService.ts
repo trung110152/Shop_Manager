@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import { OTP } from "../model/OTP";
-import { log } from "winston";
+import { error, log } from "winston";
 
 class UserService {
     private userRepository;
@@ -20,9 +20,9 @@ class UserService {
         if (userCheck) {
             return 'Username registered';
         }
-        const getOTP = await this.otpRepository.find({ email: userCheck.email });
-        console.log(getOTP)
-        if( getOTP[getOTP.length - 1].otp !== otp.otp){
+        const getOTP = await this.otpRepository.find({ email: user.email });
+        // console.log(otp)
+        if( getOTP[getOTP.length - 1].otp !== otp){
             return 'OTP code is incorrect';
         }
         user.password = await bcrypt.hash(user.password,10);
@@ -78,6 +78,14 @@ class UserService {
         }
         return user;
     }
+    findByUsername = async ( userName ) => {
+        const user = await this.userRepository.findOneBy( userName );
+        if(!user){
+            return null;
+        }
+        return user;
+    }
+
     findByEmail = async ({ email })=> {
         let user = await this.userRepository.findOneBy( email );
         if(!user){
@@ -138,7 +146,7 @@ class UserService {
 
     mailSender = async ({ email, otp })=>{
     try {
-            //to send email ->  firstly create a Transporter
+            //tao phuong thuc van chuyen
             let transporter = await nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 auth: {
@@ -147,20 +155,21 @@ class UserService {
                 }
                 }); 
 
-            //now Send e-mails to users
+            // noi dung email gui di
             let info = await transporter.sendMail({
                 from: 'trung110152@gmail.com',
                 to:`${email}`,
-                subject: "Verification Email",
-                html: `<h1>Please confirm your OTP </h1>
-                <p> here is your OTP code:-> ${otp} </p>
+                subject: "Email xác minh từ Shop NgoNam",
+                html: `<h1>Vui lòng xác nhận OTP của bạn </h1>
+                <p> Đây là mã OTP của bạn :-> ${otp} </p>
                `,
-            })
-            if( info ){
-                await this.otpRepository.save({ email, otp })
+            });
+            
+            if( !info ){
+                return null
             }
-
             // console.log("Info is here: ",info)
+            await this.otpRepository.save({ email, otp })
             return info
 
         } catch (error) {

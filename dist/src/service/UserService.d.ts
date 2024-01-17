@@ -19,6 +19,7 @@ declare class UserService {
     }>;
     save: (user: any) => Promise<any>;
     findById: (userId: any) => Promise<any>;
+    findByUsername: (userName: any) => Promise<any>;
     findByEmail: ({ email }: {
         email: any;
     }) => Promise<any>;

@@ -7,6 +7,18 @@ const UserService_1 = __importDefault(require("../service/UserService"));
 const otp_generator_1 = __importDefault(require("otp-generator"));
 class UserController {
     constructor() {
+        this.checkUsernameExist = async (req, res) => {
+            try {
+                const result = await UserService_1.default.findByUsername(req.body);
+                if (result) {
+                    return res.status(200).json("Username is existed");
+                }
+                return res.status(200).json("Username is valid");
+            }
+            catch (e) {
+                res.status(500).json(e.message);
+            }
+        };
         this.getUser = async (req, res) => {
             try {
                 let users = await UserService_1.default.getAll();
@@ -21,7 +33,6 @@ class UserController {
             res.status(200).json(response);
         };
         this.register = async (req, res) => {
-            console.log(req.body);
             let user = await this.userService.register(req.body);
             res.status(201).json(user);
         };
@@ -73,7 +84,10 @@ class UserController {
                 });
             }
             catch (error) {
-                return res.status(500).json({ success: false, error: error.message });
+                return res.status(500).json({
+                    success: false,
+                    error: error.message
+                });
             }
         };
         this.userService = UserService_1.default;
