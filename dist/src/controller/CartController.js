@@ -27,7 +27,7 @@ class CartController {
                 }
                 const existingProductIndex = carts.findIndex((product) => product.productId == newProduct.productId);
                 if (existingProductIndex !== -1) {
-                    newProduct.quantity += carts[existingProductIndex].quantity;
+                    newProduct.quantity = parseInt(newProduct.quantity, 10) + parseInt(carts[existingProductIndex].quantity, 10);
                     carts = await this.cartService.updateCart({ cartId: carts[existingProductIndex].cartId }, newProduct);
                 }
                 else {

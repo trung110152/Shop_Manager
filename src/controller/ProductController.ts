@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import productService from "../service/ProductService";
+import { log } from "winston";
 const winston = require('winston');
 class ProductController {
     private productService;
@@ -77,6 +78,17 @@ class ProductController {
         try {
           const product = await this.productService.findByConditions(productName,categoryId);
           return res.status(200).json(product);
+        } catch (error) {
+          return res.status(500).json({ message: error.message });
+        }
+      };
+
+      findByPrice = async (req: Request, res: Response) => {
+        const min = req.query.min||0;
+        const max = req.query.max||1000000000;
+        try {
+          const products = await this.productService.findByPrice( min, max );
+          return res.status(200).json(products);
         } catch (error) {
           return res.status(500).json({ message: error.message });
         }

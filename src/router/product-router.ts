@@ -9,3 +9,4 @@ productRouter.put('/:id', productController.updateProduct);
 productRouter.delete('/:id', productController.deleteProduct);
 productRouter.get('/:id', productController.findOneByID);
 productRouter.get('/findByConditions/search', productController.findByConditions); //http://localhost:3001/products/findByConditions/search?productName=h&categoryId=0
+productRouter.get('/search/findByPrice', productController.findByPrice);

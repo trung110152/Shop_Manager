@@ -33,7 +33,7 @@ class CartController {
         
           
         if (existingProductIndex !== -1) {
-          newProduct.quantity += carts[existingProductIndex].quantity  ;
+          newProduct.quantity = parseInt(newProduct.quantity, 10) + parseInt(carts[existingProductIndex].quantity, 10);
           carts = await this.cartService.updateCart({cartId:carts[existingProductIndex].cartId},newProduct)
         } else {
           carts = await this.cartService.createCart(newProduct);

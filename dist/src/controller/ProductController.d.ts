@@ -8,6 +8,7 @@ declare class ProductController {
     deleteProduct: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     findOneByID: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
     findByConditions: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    findByPrice: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
 }
 declare const _default: ProductController;
 export default _default;

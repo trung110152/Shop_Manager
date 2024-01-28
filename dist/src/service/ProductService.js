@@ -75,6 +75,18 @@ class ProductService {
                 throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm.');
             }
         };
+        this.findByPrice = async (min, max) => {
+            let condition = `where p.price >= ${min}  and p.price <= ${max} `;
+            try {
+                let sql = `select p.productId, p.productName, p.price, p.description, p.inventory, p.image, p.categoryId, c.categoryName from  shop_database.product p join shop_database.category c on p.categoryId = c.categoryId ${condition}`;
+                const productList = await this.productRepository.query(sql);
+                return productList;
+            }
+            catch (error) {
+                console.log(error.message);
+                throw new Error('Lỗi trong quá trình lấy danh sách sản phẩm.');
+            }
+        };
         this.productRepository = data_source_1.AppDataSource.getRepository(product_1.Product);
     }
 }

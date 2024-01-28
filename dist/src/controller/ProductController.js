@@ -79,6 +79,17 @@ class ProductController {
                 return res.status(500).json({ message: error.message });
             }
         };
+        this.findByPrice = async (req, res) => {
+            const min = req.query.min || 0;
+            const max = req.query.max || 1000000000;
+            try {
+                const products = await this.productService.findByPrice(min, max);
+                return res.status(200).json(products);
+            }
+            catch (error) {
+                return res.status(500).json({ message: error.message });
+            }
+        };
         this.productService = ProductService_1.default;
     }
 }

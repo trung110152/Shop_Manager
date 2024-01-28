@@ -13,4 +13,5 @@ exports.productRouter.put('/:id', ProductController_1.default.updateProduct);
 exports.productRouter.delete('/:id', ProductController_1.default.deleteProduct);
 exports.productRouter.get('/:id', ProductController_1.default.findOneByID);
 exports.productRouter.get('/findByConditions/search', ProductController_1.default.findByConditions);
+exports.productRouter.get('/search/findByPrice', ProductController_1.default.findByPrice);
 //# sourceMappingURL=product-router.js.map
